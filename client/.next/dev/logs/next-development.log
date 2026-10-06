@@ -31,3 +31,4 @@
 {"timestamp":"00:03:47.958","source":"Server","level":"ERROR","message":"[browser] \"Uncaught ReferenceError: Elms_Sans is not defined\\n    at Module.eval (app/layout.tsx:5:18)\\n    at module evaluation (app/layout.tsx:91:1)\\n  3 | import \\\"./globals.css\\\";\\n  4 |\\n> 5 | const elmsSans = Elms_Sans({\\n    |                  ^\\n  6 |   variable: \\\"--font-geist-sans\\\",\\n  7 |   subsets: [\\\"latin\\\"],\\n  8 | });\""}
 {"timestamp":"00:03:58.407","source":"Browser","level":"INFO","message":"Download the React DevTools for a better development experience: https://react.dev/link/react-devtools"}
 {"timestamp":"00:03:59.071","source":"Browser","level":"INFO","message":"Download the React DevTools for a better development experience: https://react.dev/link/react-devtools"}
+{"timestamp":"01:10:07.733","source":"Server","level":"LOG","message":"✓ Compiled in 91ms"}
