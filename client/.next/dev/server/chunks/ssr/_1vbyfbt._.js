@@ -354,8 +354,8 @@ __turbopack_context__.s([
     "APP_BASE_URL",
     ()=>APP_BASE_URL
 ]);
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:4000";
-const APP_BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3001";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "https://porta-api.princechaurasiya.in";
+const APP_BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://porta.princechaurasiya.in";
 }),
 ];
 
