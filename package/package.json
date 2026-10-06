@@ -1,0 +1,24 @@
+{
+  "name": "mytunnel",
+  "version": "0.1.0",
+  "description": "A simple ngrok-like tunneling CLI",
+  "type": "module",
+  "bin": {
+    "mytunnel": "./dist/index.js"
+  },
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "@types/ws": "^8.18.2",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "commander": "^15.0.0",
+    "dotenv": "^18.0.5",
+    "ws": "^8.22.0"
+  }
+}
