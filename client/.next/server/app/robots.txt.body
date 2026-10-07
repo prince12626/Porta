@@ -1,6 +1,0 @@
-User-Agent: *
-Allow: /
-Disallow: /dashboard
-
-Host: https://porta.dev
-Sitemap: https://porta.dev/sitemap.xml
