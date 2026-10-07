@@ -1,9 +1,6 @@
 import os from "os";
 import path from "path";
 import fs from "fs";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 const directory = path.join(os.homedir(), ".mytunnel");
 const configPath = path.join(directory, "config.json");
@@ -31,14 +28,6 @@ export function clearConfig() {
   }
 }
 
-export const API_URL = process.env.MYTUNNEL_API_URL!;
+export const API_URL = "https://porta-api.princechaurasiya.in";
 
-export const WS_URL = process.env.MYTUNNEL_WS_URL!;
-
-if (!API_URL) {
-  throw new Error("MYTUNNEL_API_URL is not configured");
-}
-
-if (!WS_URL) {
-  throw new Error("MYTUNNEL_WS_URL is not configured");
-}
+export const WS_URL = "wss://porta-api.princechaurasiya.in/tunnel";

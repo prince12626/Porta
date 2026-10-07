@@ -27,11 +27,27 @@ export function CreateTunnelModal({
     setTargetPort("3000");
   }, [open]);
 
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && !isSubmitting) {
+        onClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleEscape);
+    return () => window.removeEventListener("keydown", handleEscape);
+  }, [isSubmitting, onClose, open]);
+
   if (!open) {
     return null;
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     const trimmed = targetPort.trim();
 
     if (!trimmed) {
@@ -85,60 +101,123 @@ export function CreateTunnelModal({
     }
   };
 
+  const closeWhenBackdropClicked = (
+    event: React.MouseEvent<HTMLDivElement>,
+  ) => {
+    if (event.target === event.currentTarget && !isSubmitting) {
+      onClose();
+    }
+  };
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-      <div className="w-full max-w-md rounded-2xl border border-zinc-200 bg-white p-6 shadow-xl">
-        <div className="mb-5 flex items-center justify-between gap-3">
-          <h2 className="text-xl font-semibold text-zinc-950">Create tunnel</h2>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/70 px-4 py-8 backdrop-blur-sm"
+      onMouseDown={closeWhenBackdropClicked}
+    >
+      <section
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="create-tunnel-title"
+        className="my-auto w-full max-w-lg border border-[#454545] bg-[#161616] shadow-[0_30px_100px_rgba(0,0,0,0.5)]"
+      >
+        <div className="flex items-start justify-between border-b border-[#323232] px-5 py-5 sm:px-6">
+          <div>
+            <p className="text-[10px] font-semibold tracking-[0.16em] text-[#bababa]">
+              NEW ENDPOINT
+            </p>
+            <h2
+              id="create-tunnel-title"
+              className="mt-2 text-xl font-medium tracking-[-0.035em] text-[#f2f2f2]"
+            >
+              Create a tunnel
+            </h2>
+            <p className="mt-1 text-sm text-[#a5a5a5]">
+              Connect a public URL to an app running on your machine.
+            </p>
+          </div>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-full border border-zinc-300 px-2.5 py-1 text-sm text-zinc-600 transition hover:border-zinc-900 hover:text-zinc-950"
+            disabled={isSubmitting}
+            aria-label="Close dialog"
+            className="flex h-8 w-8 shrink-0 items-center justify-center border border-[#3e3e3e] text-[#b3b3b3] transition hover:border-[#7c7c7c] hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
           >
-            Close
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 16 16"
+              className="h-4 w-4"
+              fill="none"
+            >
+              <path
+                d="m4 4 8 8m0-8-8 8"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeWidth="1.5"
+              />
+            </svg>
           </button>
         </div>
 
-        <div className="space-y-4">
-          <label className="block text-sm font-medium text-zinc-700">
-            Target port
-            <input
-              type="number"
-              min={1}
-              max={65535}
-              step={1}
-              value={targetPort}
-              onChange={(event) => setTargetPort(event.target.value)}
-              className="mt-2 w-full rounded-xl border border-zinc-300 bg-white px-3 py-2.5 text-base text-zinc-950 outline-none transition focus:border-zinc-950"
-              placeholder="3000"
-            />
+        <form onSubmit={handleSubmit} className="space-y-5 px-5 py-5 sm:px-6 sm:py-6">
+          <label
+            htmlFor="target-port"
+            className="block text-sm font-medium text-[#e3e3e3]"
+          >
+            Local port
+            <div className="mt-2.5 flex border border-[#3e3e3e] bg-[#0f0f0f] focus-within:border-[#bababa]">
+              <span className="flex items-center border-r border-[#323232] px-3 font-mono text-xs text-[#828282]">
+                localhost:
+              </span>
+              <input
+                id="target-port"
+                type="number"
+                min={1}
+                max={65535}
+                step={1}
+                value={targetPort}
+                onChange={(event) => setTargetPort(event.target.value)}
+                aria-invalid={Boolean(error)}
+                aria-describedby={error ? "create-tunnel-error" : "target-port-help"}
+                className="min-w-0 flex-1 bg-transparent px-3 py-3 font-mono text-sm text-[#f2f2f2] outline-none placeholder:text-[#6d6d6d]"
+                placeholder="3000"
+                autoFocus
+                required
+              />
+            </div>
           </label>
+          <p id="target-port-help" className="-mt-3 text-xs text-[#8c8c8c]">
+            Enter a port between 1 and 65535.
+          </p>
 
           {error ? (
-            <p className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+            <p
+              id="create-tunnel-error"
+              role="alert"
+              className="border border-[#444444] bg-[#191919] px-3.5 py-3 text-sm leading-5 text-[#c2c2c2]"
+            >
               {error}
             </p>
           ) : null}
 
-          <div className="flex justify-end gap-3 pt-2">
+          <div className="flex flex-col-reverse gap-2 border-t border-[#323232] pt-5 sm:flex-row sm:justify-end">
             <button
               type="button"
               onClick={onClose}
-              className="rounded-full border border-zinc-300 px-4 py-2 text-sm font-medium text-zinc-700 transition hover:border-zinc-900 hover:text-zinc-950"
+              disabled={isSubmitting}
+              className="border border-[#454545] px-4 py-2.5 text-sm font-medium text-[#cbcbcb] transition hover:border-[#7c7c7c] hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
             >
               Cancel
             </button>
             <button
-              type="button"
-              onClick={handleSubmit}
+              type="submit"
               disabled={isSubmitting}
-              className="rounded-full bg-zinc-950 px-4 py-2 text-sm font-medium text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:bg-zinc-400"
+              className="bg-[#e1e1e1] px-4 py-2.5 text-sm font-semibold text-[#1d1d1d] transition hover:bg-[#ebebeb] disabled:cursor-not-allowed disabled:bg-[#626262] disabled:text-[#dcdcdc]"
             >
-              {isSubmitting ? "Creating..." : "Create tunnel"}
+              {isSubmitting ? "Creating tunnel…" : "Create tunnel"}
             </button>
           </div>
-        </div>
-      </div>
+        </form>
+      </section>
     </div>
   );
 }

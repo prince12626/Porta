@@ -3,7 +3,7 @@ import { IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 
 const elmsSans = IBM_Plex_Sans({
-  variable: "--font-geist-sans",
+  variable: "--font-porta-sans",
   subsets: ["latin"],
 });
 
@@ -76,11 +76,8 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="en"
-      className={`${elmsSans.variable} h-full antialiased`}
-    >
-      <body className="min-h-full bg-white text-zinc-950">{children}</body>
+    <html lang="en" className={`${elmsSans.variable} h-full antialiased`}>
+      <body className="min-h-full">{children}</body>
     </html>
   );
 }

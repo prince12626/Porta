@@ -5,7 +5,7 @@ export async function httpTunnel(port: number) {
   const config = getConfig();
 
   if (!config.token) {
-    console.error("You are not logged in. Run: mytunnel login");
+    console.error("You are not logged in. Run: porta login");
     return;
   }
 
@@ -39,7 +39,7 @@ export async function httpTunnel(port: number) {
   const socket = new WebSocket(WS_URL);
 
   socket.on("open", () => {
-    console.log("✓ Connected to MyTunnel");
+    console.log("✓ Connected to Porta");
 
     socket.send(
       JSON.stringify({
@@ -59,7 +59,7 @@ export async function httpTunnel(port: number) {
 
     if (message.type === "registered") {
       console.log("✓ Tunnel established");
-      console.log(`→ http://localhost:4000/t/${tunnelId}`);
+      console.log(`→ https://porta-api.princechaurasiya.in/t/${tunnelId}`);
       return;
     }
 
